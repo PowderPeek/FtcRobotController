@@ -29,7 +29,7 @@ public class BioBuzzTeleOp extends LinearOpMode {
         Shooter shooter = new Shooter(robot);
 
         telemetry.addLine("BIOBUZZ TELEOP READY");
-        telemetry.addLine("1 Gamepad | 7 Motors");
+        telemetry.addLine("1 Gamepad | 8 Motors"); // UPDATED: Reflects the addition of flywheel2
         telemetry.update();
 
         waitForStart();
@@ -78,6 +78,12 @@ public class BioBuzzTeleOp extends LinearOpMode {
                 telemetry.addData(
                         "Flywheel Power",
                         robot.flywheel.getPower()
+                );
+
+                // ADDED: Real-time telemetry monitoring for your secondary shooter motor
+                telemetry.addData(
+                        "Flywheel 2 Power",
+                        robot.flywheel2.getPower()
                 );
 
                 telemetry.addData(
