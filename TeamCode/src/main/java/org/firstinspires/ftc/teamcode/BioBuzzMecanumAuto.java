@@ -32,6 +32,9 @@ public class BioBuzzMecanumAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
 
+            // Ensure the servo is initialized at its starting home position
+            robot.toggleServo.setPosition(0.0);
+
             // STEP 1: Spin up the flywheel shooter
             telemetry.addData("Auto Status", "Spinning up Flywheel");
             telemetry.update();
@@ -52,6 +55,12 @@ public class BioBuzzMecanumAuto extends LinearOpMode {
             shooter.stop();
             intake.stop();
 
+            // STEP 3.5: Move Servo to 90 degrees
+            telemetry.addData("Auto Status", "Moving Servo to 90 Degrees");
+            telemetry.update();
+            robot.toggleServo.setPosition(0.5); // Turn 90 degrees
+            sleep(500);                         // Short pause to allow mechanical travel time
+
             // STEP 4: Drive forward out of the starting zone
             telemetry.addData("Auto Status", "Driving Forward");
             telemetry.update();
@@ -59,19 +68,28 @@ public class BioBuzzMecanumAuto extends LinearOpMode {
             drive.drive(autoGamepad);
             sleep(1000);                      // Move forward for 1 second
 
+            // FIX: Clear the sticks and stop the drive before moving to the next action
+            autoGamepad.left_stick_y = 0.0f;
+            drive.stop();
+
+            // STEP 4.5: Return Servo back to original home position
+            telemetry.addData("Auto Status", "Returning Servo to Home Position");
+            telemetry.update();
+            robot.toggleServo.setPosition(0.0); // Reset servo position
+            sleep(300);
+
             // STEP 5: Strafe sideways to align or park
             telemetry.addData("Auto Status", "Strafing Right to Park");
             telemetry.update();
-            autoGamepad.left_stick_y = 0.0f;  // Stop forward vector
             autoGamepad.left_stick_x = 0.5f;  // Positive = right, Negative = left
             drive.drive(autoGamepad);
             sleep(1200);                      // Strafe for 1.2 seconds
 
             // STEP 6: Full stop
+            autoGamepad.left_stick_x = 0.0f;  // FIX: Reset virtual joystick state completely
             drive.stop();
             telemetry.addData("Auto Status", "Complete!");
             telemetry.update();
         }
     }
 }
-

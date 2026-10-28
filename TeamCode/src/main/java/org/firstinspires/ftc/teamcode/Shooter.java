@@ -18,21 +18,17 @@ public class Shooter {
     }
 
     public void update(Gamepad gamepad) {
-
         // LEFT TRIGGER: Flywheel
-        double power =
-                gamepad.left_trigger * MAX_FLYWHEEL_POWER;
+        double power = gamepad.left_trigger * MAX_FLYWHEEL_POWER;
+        double clippedPower = Range.clip(power * FLYWHEEL_DIRECTION, -1.0, 1.0);
 
-        robot.flywheel.setPower(
-                Range.clip(
-                        power * FLYWHEEL_DIRECTION,
-                        -1.0,
-                        1.0
-                )
-        );
+        // UPDATED: Distribute power to both motors simultaneously
+        robot.flywheel.setPower(clippedPower);
+        robot.flywheel2.setPower(clippedPower);
     }
 
     public void stop() {
         robot.flywheel.setPower(0);
+        robot.flywheel2.setPower(0);
     }
 }

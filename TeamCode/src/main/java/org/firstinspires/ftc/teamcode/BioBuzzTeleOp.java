@@ -7,6 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "BioBuzz TeleOp", group = "Competition")
 public class BioBuzzTeleOp extends LinearOpMode {
 
+    // Toggle Tracking Variables
+    private boolean servoExtended = false;
+    private boolean lastButtonState = false;
+
     @Override
     public void runOpMode() {
 
@@ -41,6 +45,17 @@ public class BioBuzzTeleOp extends LinearOpMode {
 
                 // FLYWHEEL
                 shooter.update(gamepad1);
+
+                // SERVO TOGGLE LOGIC (using Gamepad 1 Button B)
+                if (gamepad1.b && !lastButtonState) {
+                    servoExtended = !servoExtended; // Swap true/false state
+                    if (servoExtended) {
+                        robot.toggleServo.setPosition(0.5); // ~90 Degrees
+                    } else {
+                        robot.toggleServo.setPosition(0.0); // Home position
+                    }
+                }
+                lastButtonState = gamepad1.b; // Remember button state for next loop iteration
 
                 // TELEMETRY
                 telemetry.addLine("=== BIOBUZZ ===");

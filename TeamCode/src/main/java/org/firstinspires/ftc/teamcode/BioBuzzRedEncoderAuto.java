@@ -32,6 +32,9 @@ public class BioBuzzRedEncoderAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // Ensure servo is at home state at start
+            robot.toggleServo.setPosition(0.0);
+
             // STEP 1: Spin up the flywheel shooter
             autoGamepad.left_trigger = 0.75f;
             shooter.update(autoGamepad);
@@ -51,9 +54,14 @@ public class BioBuzzRedEncoderAuto extends LinearOpMode {
             // STEP 3: Drive Forward exactly 24 inches using Encoders
             telemetry.addData("Auto Status", "Encoder Drive: Forward");
             telemetry.update();
+            robot.toggleServo.setPosition(0.5); // Turns 90 degrees
+            sleep(500); // Give the servo a moment to physically reach destination
             encoderDrive(0.4, 24, 24, 24, 24);
 
-            // STEP 4: Strafe RIGHT exactly 18 inches into Red Parking Zone
+            // STEP 4: Bring Servo Mech back home
+            robot.toggleServo.setPosition(0.0);
+
+            // STEP 5: Strafe RIGHT exactly 18 inches into Red Parking Zone
             // Mecanum strafe math directions: FL(+), BL(-), FR(-), BR(+)
             telemetry.addData("Auto Status", "Encoder Drive: Strafing Right");
             telemetry.update();
