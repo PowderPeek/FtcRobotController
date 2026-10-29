@@ -50,9 +50,9 @@ public class BioBuzzTeleOp extends LinearOpMode {
                 if (gamepad1.b && !lastButtonState) {
                     servoExtended = !servoExtended; // Swap true/false state
                     if (servoExtended) {
-                        robot.toggleServo.setPosition(0.5); // ~90 Degrees
+                        robot.toggleServo.setPosition(0.6); // ~90 Degrees
                     } else {
-                        robot.toggleServo.setPosition(0.0); // Home position
+                        robot.toggleServo.setPosition(0.9); // Home position
                     }
                 }
                 lastButtonState = gamepad1.b; // Remember button state for next loop iteration

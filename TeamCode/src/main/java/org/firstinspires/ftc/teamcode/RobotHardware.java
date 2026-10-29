@@ -71,6 +71,6 @@ public class RobotHardware {
         frontIntake.setPower(0);
         backIntake.setPower(0);
 
-        toggleServo.setPosition(0.0);
+        toggleServo.setPosition(0.6);
     }
 }
