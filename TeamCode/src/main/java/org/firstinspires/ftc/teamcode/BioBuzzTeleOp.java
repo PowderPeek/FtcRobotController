@@ -11,6 +11,10 @@ public class BioBuzzTeleOp extends LinearOpMode {
     private boolean servoExtended = false;
     private boolean lastButtonState = false;
 
+    // ADDED: Edge-detection state trackers for dpad inputs
+    private boolean lastDpadUp = false;
+    private boolean lastDpadDown = false;
+
     @Override
     public void runOpMode() {
 
@@ -57,6 +61,18 @@ public class BioBuzzTeleOp extends LinearOpMode {
                 }
                 lastButtonState = gamepad1.b; // Remember button state for next loop iteration
 
+                // ADDED: Shooter Speed Tuning Logic via Dpad Up
+                if (gamepad1.dpad_up && !lastDpadUp) {
+                    shooter.incrementSpeed();
+                }
+                lastDpadUp = gamepad1.dpad_up;
+
+                // ADDED: Shooter Speed Tuning Logic via Dpad Down
+                if (gamepad1.dpad_down && !lastDpadDown) {
+                    shooter.decrementSpeed();
+                }
+                lastDpadDown = gamepad1.dpad_down;
+
                 // TELEMETRY
                 telemetry.addLine("=== BIOBUZZ ===");
 
@@ -73,6 +89,13 @@ public class BioBuzzTeleOp extends LinearOpMode {
                 telemetry.addData(
                         "Strafe",
                         gamepad1.left_stick_x
+                );
+
+                // ADDED: Visual indicator showing your current speed threshold cap
+                telemetry.addData(
+                        "Shooter Max Speed Cap",
+                        "%.2f",
+                        shooter.getMaxPowerCap()
                 );
 
                 telemetry.addData(

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@Autonomous(name = "BioBuzz Auto - RED Round Trip", group = "Red")
+@Autonomous(name = "BioBuzz Auto - RED", group = "Red")
 public class BioBuzzAutoRed extends LinearOpMode {
 
     @Override

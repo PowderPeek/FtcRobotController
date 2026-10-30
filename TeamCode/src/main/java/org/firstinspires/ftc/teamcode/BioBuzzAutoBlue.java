@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@Autonomous(name = "BioBuzz Auto - Round Trip", group = "Competition")
+@Autonomous(name = "BioBuzz Auto - Blue", group = "Competition")
 public class BioBuzzAutoBlue extends LinearOpMode {
 
     @Override
@@ -84,14 +84,14 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             telemetry.update();
             autoGamepad.left_trigger = 0.75f; // Fires shooter at 75% power
             shooter.update(autoGamepad);
-            sleep(2000);                      // Wait 2 seconds for motors to stabilize
+            sleep(3000);                      // Wait 3 seconds for motors to stabilize
 
             // STEP 6: Feed the preloaded Pollen by activating both intakes forward
             telemetry.addData("Auto Status", "Firing Preloads!");
             telemetry.update();
             autoGamepad.right_trigger = 1.0f; // Activates both intakes forward
             intake.update(autoGamepad);
-            sleep(1500);                      // Run intake feed for 1.5 seconds
+            sleep(2000);                      // Run intake feed for 2 seconds
 
             // Shut down scoring and launcher components cleanly
             autoGamepad.left_trigger = 0.0f;
@@ -136,7 +136,7 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             telemetry.update();
             autoGamepad.left_stick_y = 0.4f;  // Positive translates to backward power
             drive.drive(autoGamepad);
-            sleep(1000);
+            sleep(1500);
 
             // Clear all virtual joysticks for complete final safety
             autoGamepad.left_stick_y = 0.0f;
