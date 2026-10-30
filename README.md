@@ -1,12 +1,12 @@
 ## NOTICE
 
-This repository contains the public FTC SDK for the DECODE (2025-2026) competition season.
+This repository contains the public FTC SDK for the BIOBUZZ (2026-2027) competition season.
 
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
 ## Requirements
-To use this Android Studio project, you will need Android Studio Ladybug (2024.2) or later.
+To use this Android Studio project, you will need Android Studio Narwhal 3 Feature Drop or later.
 
 To program your robot in Blocks or OnBot Java, you do not need Android Studio.
 
@@ -58,6 +58,22 @@ Samples Folder: &nbsp;&nbsp; [/FtcRobotController/src/main/java/org/firstinspire
 The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc/teamcode](TeamCode/src/main/java/org/firstinspires/ftc/teamcode) folder contains an explanation of the sample naming convention, and instructions on how to copy them to your own project space.
 
 # Release Information
+
+## Version 12.0 (20260907-090034)
+
+### Breaking Changes
+
+* AprilTag detections can now represent either a single tag or a cluster. Code that reads `AprilTagDetection` fields must check for `AprilTagSingleDetection` or `AprilTagClusterDetection` and use the matching type.
+* The default AprilTag library now contains BIOBUZZ tags. Because those tags move during the game, they are not suitable for absolute field localization.
+
+### Enhancements
+
+* Adds support for OctoQuad MK2 firmware v3.1.0 diagnostics.
+* Updates the Android compile SDK to 34.
+
+### Bug Fixes
+
+* Fixes battery voltage not updating on the Driver Station when an OpMode sends no telemetry.
 
 ## Version 11.2.1 (20260724-093406)
 

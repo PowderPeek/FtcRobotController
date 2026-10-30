@@ -11,7 +11,7 @@ public class Shooter {
     // INCREASED FLYWHEEL POWER
     private static final double MAX_FLYWHEEL_POWER = 1.0;
 
-    private static final double FLYWHEEL_DIRECTION = -1.0;
+    private static final double FLYWHEEL_DIRECTION = 1.0;
 
     public Shooter(RobotHardware robot) {
         this.robot = robot;
