@@ -82,7 +82,7 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             // STEP 5: Spin up the dual flywheel shooter
             telemetry.addData("Auto Status", "Spinning up Dual Flywheels");
             telemetry.update();
-            autoGamepad.left_trigger = 0.75f; // Fires shooter at 75% power
+            autoGamepad.left_trigger = 0.90f; // Fires shooter at 90% power
             shooter.update(autoGamepad);
             sleep(3000);                      // Wait 3 seconds for motors to stabilize
 
