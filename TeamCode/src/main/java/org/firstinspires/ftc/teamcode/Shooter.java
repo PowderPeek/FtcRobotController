@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -8,7 +7,7 @@ public class Shooter {
 
     private final RobotHardware robot;
 
-    // CHANGED: Removed static constant, added mutable variable defaulting to 0.75 (75%)
+    // Mutable threshold tracking variable defaulting to 75% power
     private double maxFlywheelPower = 0.75;
     private static final double FLYWHEEL_DIRECTION = 1.0;
 
@@ -17,25 +16,26 @@ public class Shooter {
     }
 
     public void update(Gamepad gamepad) {
-        // LEFT TRIGGER: Scales dynamically with your adjusted max speed
+        // LEFT TRIGGER: Scales dynamically with your adjusted max speed cap
         double power = gamepad.left_trigger * maxFlywheelPower;
         double clippedPower = Range.clip(power * FLYWHEEL_DIRECTION, -1.0, 1.0);
 
+        // Distribute calculated target vector across both flywheel motors
         robot.flywheel.setPower(clippedPower);
         robot.flywheel2.setPower(clippedPower);
     }
 
-    // ADDED: Method to increase speed limit by 0.01 safely capped at 1.0
+    // Increases speed limit threshold by 0.01 safely capped at a maximum of 1.0
     public void incrementSpeed() {
         maxFlywheelPower = Range.clip(maxFlywheelPower + 0.01, 0.0, 1.0);
     }
 
-    // ADDED: Method to decrease speed limit by 0.01 safely floor-capped at 0.0
+    // Decreases speed limit threshold by 0.01 safely floor-capped at a minimum of 0.0
     public void decrementSpeed() {
         maxFlywheelPower = Range.clip(maxFlywheelPower - 0.01, 0.0, 1.0);
     }
 
-    // ADDED: Getter to display current threshold limit on the driver hub screen
+    // Getter to display current threshold limit via TeleOp driver hub telemetry
     public double getMaxPowerCap() {
         return maxFlywheelPower;
     }
