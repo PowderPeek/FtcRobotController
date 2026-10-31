@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "BioBuzz Auto - Blue or Red", group = "Competition")
+@Autonomous(name = "BioBuzz Auto - Complete Multi-Cycle", group = "Competition")
 public class BioBuzzAutoBlueRed2 extends LinearOpMode {
 
     @Override
@@ -22,7 +22,7 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
         Gamepad autoGamepad = new Gamepad();
         ElapsedTime timer = new ElapsedTime();
 
-        telemetry.addLine("BIOBUZZ AUTO READY - OPTIMIZED AT 0.82 SHOOTER");
+        telemetry.addLine("BIOBUZZ MULTI-CYCLE READY - 0.82 SHOOTER");
         telemetry.update();
 
         waitForStart();
@@ -32,7 +32,6 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
             robot.toggleServo.setPosition(0.9);
 
             // ==================== 1. INITIAL SCORING PHASE (4.0s) ====================
-            // UPDATED: Set left trigger variable vector to 0.82f to force exact power metrics
             autoGamepad.left_trigger = 0.82f;
 
             timer.reset();
@@ -56,7 +55,7 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
             intake.stop();
 
 
-            // ==================== 2. FIRST OUTBOUND DRIVING PATH (4.7s) ====================
+            // ==================== 2. FIRST NAVIGATION PATH (OUTBOUND) ====================
 
             // STEP 1: Move forward one tile
             autoGamepad.left_stick_y = -0.65f;
@@ -102,7 +101,7 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
             intake.stop();
 
 
-            // ==================== 3. FIRST RETURN PATH (REVERSED) (4.7s) ====================
+            // ==================== 3. FIRST RETURN PATH (REVERSED) ====================
 
             // STEP 6: Drive backward one tile
             autoGamepad.left_stick_y = 0.4f;
@@ -141,7 +140,6 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
 
 
             // ==================== 4. SECOND SCORING PHASE (4.0s) ====================
-            // UPDATED: Set left trigger variable vector to 0.82f to match opening launch mechanics
             autoGamepad.left_trigger = 0.82f;
 
             timer.reset();
@@ -165,59 +163,53 @@ public class BioBuzzAutoBlueRed2 extends LinearOpMode {
             intake.stop();
 
 
-            // ==================== 5. SECOND NAVIGATION PATH (5.6s) ====================
+            // ==================== 5. FINAL PATH TO LOADING ZONE ====================
 
-            // STEP 11: Move forward one tile
-            autoGamepad.left_stick_y = -0.65f;
-            drive.drive(autoGamepad);
-            sleep(750);
-            drive.stop();
-
-            // STEP 12: Turn 90 degrees counterclockwise
-            autoGamepad.left_stick_y = 0.0f;
+            // STEP 11: Turn 90 degrees counterclockwise
             autoGamepad.right_stick_x = -0.5f;
             drive.drive(autoGamepad);
             sleep(800);
             drive.stop();
 
-            // STEP 13: Move forward one tile
+            // STEP 12: Move forward one tile
             autoGamepad.right_stick_x = 0.0f;
             autoGamepad.left_stick_y = -0.65f;
             drive.drive(autoGamepad);
             sleep(750);
             drive.stop();
 
-            // STEP 14: Turn 90 degrees clockwise
+            // STEP 13: Turn 90 degrees clockwise
             autoGamepad.left_stick_y = 0.0f;
             autoGamepad.right_stick_x = 0.5f;
             drive.drive(autoGamepad);
             sleep(800);
             drive.stop();
 
-            // STEP 15: Move forward three tiles
+            // STEP 14: Move forward four tiles
             autoGamepad.right_stick_x = 0.0f;
             autoGamepad.left_stick_y = -0.65f;
             drive.drive(autoGamepad);
-            sleep(1800);
+            sleep(2600);
             drive.stop();
 
-            // STEP 16: Turn 90 degrees counterclockwise
+            // STEP 15: Turn 90 degrees counterclockwise
             autoGamepad.left_stick_y = 0.0f;
             autoGamepad.right_stick_x = -0.5f;
             drive.drive(autoGamepad);
             sleep(800);
             drive.stop();
 
-            // STEP 17: Move forward one tile
+            // STEP 16: Move forward one final tile into the Loading Zone
             autoGamepad.right_stick_x = 0.0f;
             autoGamepad.left_stick_y = -0.65f;
             drive.drive(autoGamepad);
             sleep(750);
 
+            // Final safety stop override anchor
             autoGamepad.left_stick_y = 0.0f;
             drive.stop();
 
-            telemetry.addData("Auto Status", "Route Complete!");
+            telemetry.addData("Auto Status", "Multi-Cycle Performance Completed!");
             telemetry.update();
         }
     }
