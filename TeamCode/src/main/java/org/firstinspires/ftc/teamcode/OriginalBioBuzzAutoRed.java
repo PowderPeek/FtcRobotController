@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@Autonomous(name = "BioBuzz Auto - Blue", group = "Competition")
-public class BioBuzzAutoBlue extends LinearOpMode {
+@Autonomous(name = "BioBuzz Auto - RED", group = "Red")
+public class OriginalBioBuzzAutoRed extends LinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -23,7 +23,7 @@ public class BioBuzzAutoBlue extends LinearOpMode {
         // Create virtual gamepad instances to trigger your TeleOp methods automatically
         Gamepad autoGamepad = new Gamepad();
 
-        telemetry.addLine("BIOBUZZ AUTO READY");
+        telemetry.addLine("RED ALLIANCE AUTO READY");
         telemetry.addLine("Dual Flywheels (flywheel + flywheel2) fully linked.");
         telemetry.update();
 
@@ -47,10 +47,10 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             autoGamepad.left_stick_y = 0.0f;
             drive.stop();
 
-            // STEP 2: Strafe sideways across 4 full tiles
-            telemetry.addData("Auto Status", "Strafing Across 4 Tiles");
+            // STEP 2: Strafe LEFT across 4 full tiles (Mirrored for Red)
+            telemetry.addData("Auto Status", "Strafing Across 4 Tiles Left");
             telemetry.update();
-            autoGamepad.left_stick_x = 0.5f;  // Positive = right
+            autoGamepad.left_stick_x = -0.5f; // Negative = left
             drive.drive(autoGamepad);
             sleep(4800);                      // Clears roughly 4 tiles
 
@@ -67,10 +67,10 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             autoGamepad.left_stick_y = 0.0f;
             drive.stop();
 
-            // STEP 4: Turn 90 degrees counterclockwise to align with target
-            telemetry.addData("Auto Status", "Turning 90 Deg Counterclockwise");
+            // STEP 4: Turn 90 degrees clockwise to align with target (Mirrored for Red)
+            telemetry.addData("Auto Status", "Turning 90 Deg Clockwise");
             telemetry.update();
-            autoGamepad.right_stick_x = -0.5f; // Negative turns counterclockwise
+            autoGamepad.right_stick_x = 0.5f; // Positive turns clockwise
             drive.drive(autoGamepad);
             sleep(800);
 
@@ -82,16 +82,16 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             // STEP 5: Spin up the dual flywheel shooter
             telemetry.addData("Auto Status", "Spinning up Dual Flywheels");
             telemetry.update();
-            autoGamepad.left_trigger = 0.90f; // Fires shooter at 90% power
+            autoGamepad.left_trigger = 0.82f; // Fires shooter at 82% power
             shooter.update(autoGamepad);
-            sleep(3000);                      // Wait 3 seconds for motors to stabilize
+            sleep(2000);                      // Wait 2 seconds for motors to stabilize
 
             // STEP 6: Feed the preloaded Pollen by activating both intakes forward
             telemetry.addData("Auto Status", "Firing Preloads!");
             telemetry.update();
             autoGamepad.right_trigger = 1.0f; // Activates both intakes forward
             intake.update(autoGamepad);
-            sleep(2000);                      // Run intake feed for 2 seconds
+            sleep(1500);                      // Run intake feed for 1.5 seconds
 
             // Shut down scoring and launcher components cleanly
             autoGamepad.left_trigger = 0.0f;
@@ -101,10 +101,10 @@ public class BioBuzzAutoBlue extends LinearOpMode {
 
             // ==================== RETURN PATH (REVERSE ORDER) ====================
 
-            // STEP 7: Turn 90 degrees clockwise to fix alignment orientation
-            telemetry.addData("Auto Status", "Return Path: Turning 90 Deg Clockwise");
+            // STEP 7: Turn 90 degrees counterclockwise to fix orientation (Mirrored for Red)
+            telemetry.addData("Auto Status", "Return Path: Turning 90 Deg Counterclockwise");
             telemetry.update();
-            autoGamepad.right_stick_x = 0.5f;  // Positive turns clockwise
+            autoGamepad.right_stick_x = -0.5f;  // Negative turns counterclockwise
             drive.drive(autoGamepad);
             sleep(800);
 
@@ -121,10 +121,10 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             autoGamepad.left_stick_y = 0.0f;
             drive.stop();
 
-            // STEP 9: Strafe LEFT across 4 full tiles
-            telemetry.addData("Auto Status", "Return Path: Strafing Left Across 4 Tiles");
+            // STEP 9: Strafe RIGHT across 4 full tiles (Mirrored for Red)
+            telemetry.addData("Auto Status", "Return Path: Strafing Right Across 4 Tiles");
             telemetry.update();
-            autoGamepad.left_stick_x = -0.5f; // Negative = left
+            autoGamepad.left_stick_x = 0.5f; // Positive = right
             drive.drive(autoGamepad);
             sleep(4800);
 
@@ -136,7 +136,7 @@ public class BioBuzzAutoBlue extends LinearOpMode {
             telemetry.update();
             autoGamepad.left_stick_y = 0.4f;  // Positive translates to backward power
             drive.drive(autoGamepad);
-            sleep(1500);
+            sleep(1000);
 
             // Clear all virtual joysticks for complete final safety
             autoGamepad.left_stick_y = 0.0f;

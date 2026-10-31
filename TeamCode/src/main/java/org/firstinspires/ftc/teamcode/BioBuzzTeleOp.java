@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,29 +10,29 @@ public class BioBuzzTeleOp extends LinearOpMode {
     private boolean servoExtended = false;
     private boolean lastButtonState = false;
 
-    // ADDED: Edge-detection state trackers for dpad inputs
+    // Edge-detection state trackers for gamepad2 dpad inputs
     private boolean lastDpadUp = false;
     private boolean lastDpadDown = false;
 
     @Override
     public void runOpMode() {
 
-        // Initialize hardware
+        // Initialize hardware mapping container
         RobotHardware robot = new RobotHardware();
 
         // Control Hub: four drivetrain motors
         robot.initDrive(hardwareMap);
 
-        // Expansion Hub: flywheel and intakes
+        // Expansion Hub: flywheel, intakes, and toggle servo
         robot.initMechanisms(hardwareMap);
 
-        // Initialize subsystems
+        // Initialize object-oriented subsystems
         MecanumDrive drive = new MecanumDrive(robot);
         Intake intake = new Intake(robot);
         Shooter shooter = new Shooter(robot);
 
         telemetry.addLine("BIOBUZZ TELEOP READY");
-        telemetry.addLine("1 Gamepad | 8 Motors"); // UPDATED: Reflects the addition of flywheel2
+        telemetry.addLine("2 Gamepads Active | 8 Motors");
         telemetry.update();
 
         waitForStart();
@@ -41,95 +40,65 @@ public class BioBuzzTeleOp extends LinearOpMode {
         try {
             while (opModeIsActive()) {
 
+                // --- GAMEPAD 1: DRIVER CONTROLS ---
+
                 // DRIVETRAIN
                 drive.drive(gamepad1);
 
                 // FRONT + BACK INTAKES
                 intake.update(gamepad1);
 
-                // FLYWHEEL
+                // FLYWHEEL TRIGGER
                 shooter.update(gamepad1);
 
                 // SERVO TOGGLE LOGIC (using Gamepad 1 Button B)
                 if (gamepad1.b && !lastButtonState) {
                     servoExtended = !servoExtended; // Swap true/false state
                     if (servoExtended) {
-                        robot.toggleServo.setPosition(0.6); // ~90 Degrees
+                        robot.toggleServo.setPosition(0.6); // ~90 Degrees / Extended
                     } else {
                         robot.toggleServo.setPosition(0.9); // Home position
                     }
                 }
                 lastButtonState = gamepad1.b; // Remember button state for next loop iteration
 
-                // ADDED: Shooter Speed Tuning Logic via Dpad Up
-                if (gamepad1.dpad_up && !lastDpadUp) {
+
+                // --- GAMEPAD 2: CO-DRIVER TUNING CONTROLS ---
+
+                // Shooter Speed Tuning Logic via Gamepad 2 Dpad Up
+                if (gamepad2.dpad_up && !lastDpadUp) {
                     shooter.incrementSpeed();
                 }
-                lastDpadUp = gamepad1.dpad_up;
+                lastDpadUp = gamepad2.dpad_up;
 
-                // ADDED: Shooter Speed Tuning Logic via Dpad Down
-                if (gamepad1.dpad_down && !lastDpadDown) {
+                // Shooter Speed Tuning Logic via Gamepad 2 Dpad Down
+                if (gamepad2.dpad_down && !lastDpadDown) {
                     shooter.decrementSpeed();
                 }
-                lastDpadDown = gamepad1.dpad_down;
+                lastDpadDown = gamepad2.dpad_down;
 
-                // TELEMETRY
+
+                // --- TELEMETRY ---
                 telemetry.addLine("=== BIOBUZZ ===");
 
-                telemetry.addData(
-                        "Forward",
-                        -gamepad1.left_stick_y
-                );
+                telemetry.addData("Forward", -gamepad1.left_stick_y);
+                telemetry.addData("Turn", gamepad1.right_stick_x);
+                telemetry.addData("Strafe", gamepad1.left_stick_x);
 
-                telemetry.addData(
-                        "Turn",
-                        gamepad1.right_stick_x
-                );
+                // Tuning Feedback
+                telemetry.addData("Shooter Max Speed Cap (G2)", "%.3f", shooter.getMaxPowerCap());
+                telemetry.addData("Flywheel Power", robot.flywheel.getPower());
+                telemetry.addData("Flywheel 2 Power", robot.flywheel2.getPower());
 
-                telemetry.addData(
-                        "Strafe",
-                        gamepad1.left_stick_x
-                );
-
-                // ADDED: Visual indicator showing your current speed threshold cap
-                telemetry.addData(
-                        "Shooter Max Speed Cap",
-                        "%.2f",
-                        shooter.getMaxPowerCap()
-                );
-
-                telemetry.addData(
-                        "Flywheel Power",
-                        robot.flywheel.getPower()
-                );
-
-                // ADDED: Real-time telemetry monitoring for your secondary shooter motor
-                telemetry.addData(
-                        "Flywheel 2 Power",
-                        robot.flywheel2.getPower()
-                );
-
-                telemetry.addData(
-                        "Front Intake",
-                        robot.frontIntake.getPower()
-                );
-
-                telemetry.addData(
-                        "Back Intake",
-                        robot.backIntake.getPower()
-                );
-
-                telemetry.addData(
-                        "Eject",
-                        gamepad1.y ? "ON" : "OFF"
-                );
+                telemetry.addData("Front Intake", robot.frontIntake.getPower());
+                telemetry.addData("Back Intake", robot.backIntake.getPower());
+                telemetry.addData("Eject", gamepad1.y ? "ON" : "OFF");
 
                 telemetry.update();
                 idle();
             }
         } finally {
-
-            // Stop everything when TeleOp ends
+            // Stop everything safely when TeleOp ends or exception hits
             drive.stop();
             intake.stop();
             shooter.stop();
